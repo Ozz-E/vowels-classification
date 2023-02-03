@@ -6,6 +6,10 @@ __pycache__/
 # C extensions
 *.so
 
+#OS junk files
+[Tt]humbs.db
+*.DS_Store
+
 # Distribution / packaging
 .Python
 build/
