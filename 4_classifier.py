@@ -77,8 +77,6 @@ N_f2 = max_f2 - min_f2
 print('f1 range: {}-{} | {} points'.format(min_f1, max_f1, N_f1))
 print('f2 range: {}-{} | {} points'.format(min_f2, max_f2, N_f2))
 
-# Write your code here
-
 # Create a custom grid of shape N_f1 x N_f2
 # The grid will span all the values of (f1, f2) pairs, between [min_f1, max_f1] on f1 axis, and between [min_f2, max_f2]
 # on f2 axis
