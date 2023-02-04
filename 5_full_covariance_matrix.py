@@ -31,14 +31,13 @@ f2 = data['f2']
 
 # Initialize array containing f1, f2 & f1+f2, of all phonemes.
 X_full = np.zeros((len(f1), 3))
-#########################################
-# Write your code here
+
 # Store f1 in the first column of X_full, f2 in the second column of X_full and f1+f2 in the third column of X_full
 for i in range(X_full.shape[0]):
     X_full[i, 0] = f1[i]
     X_full[i, 1] = f2[i]
     X_full[i, 2] = f1[i]+f2[i]
-########################################/
+
 X_full = X_full.astype(np.float32)
 
 # We will train a GMM with k components, on a selected phoneme id which is stored in variable "p_id" 
@@ -47,8 +46,6 @@ X_full = X_full.astype(np.float32)
 p_id = 1
 # number of GMM components
 k = 3
-#########################################
-# Write your code here
 
 # Create an array named "X_phoneme", containing only samples that belong to the chosen phoneme.
 # The shape of X_phoneme will be two-dimensional. Each row will represent a sample of the dataset, and each column will represent a feature (e.g. f1 or f2 or f1+f2)
@@ -62,9 +59,6 @@ ids = m[0]
 for n in range(X_phoneme.shape[0]):
     X_phoneme[n] = X_full[ids[n]]
 
-########################################/
-
-################################################
 # Plot array containing the chosen phoneme
 
 # Create a figure and a subplot
@@ -78,7 +72,6 @@ plot_data_3D(X=X_phoneme, title_string=title_string, ax=ax1)
 plot_filename = os.path.join(os.getcwd(), 'figures', 'dataset_3D_phoneme_{}.png'.format(p_id))
 plt.savefig(plot_filename)
 
-################################################
 # Train a GMM with k components, on the chosen phoneme
 
 # as dataset X, we will use only the samples of the chosen phoneme
@@ -109,7 +102,6 @@ for i in range(k):
 # Initialize array Z that will get the predictions of each Gaussian on each sample
 Z = np.zeros((N,k)) # shape Nxk
 
-###############################
 # run Expectation Maximization algorithm for n_iter iterations
 for t in range(n_iter):
     #print('****************************************')

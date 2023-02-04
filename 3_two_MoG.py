@@ -33,20 +33,16 @@ f2 = data['f2']
 
 # Initialize array containing f1 & f2, of all phonemes.
 X_full = np.zeros((len(f1), 2))
-#########################################
-# Write your code here
+
 # Store f1 in the first column of X_full, and f2 in the second column of X_full
 for i in range(X_full.shape[0]):
     X_full[i, 0] = f1[i]
     X_full[i, 1] = f2[i]
-########################################/
+
 X_full = X_full.astype(np.float32)
 
 # number of GMM components
 k = 3
-
-#########################################
-# Write your code here
 
 # Create an array named "X_phonemes_1_2", containing only samples that belong to phoneme 1 and
 # samples that belong to phoneme 2.
@@ -63,8 +59,6 @@ for n in range(X_phonemes_1_2.shape[0]):
     X_phonemes_1_2[n] = X_full[ids[n]]
 # X_phonemes_1_2 = ...
 
-########################################/
-
 # Plot array containing the chosen phonemes
 
 # Create a figure and a subplot
@@ -77,9 +71,6 @@ plot_data(X=X_phonemes_1_2, title_string=title_string, ax=ax1)
 plot_filename = os.path.join(os.getcwd(), 'figures', 'dataset_phonemes_1_2.png')
 plt.savefig(plot_filename)
 
-
-#########################################
-# Write your code here
 # Get predictions on samples from both phonemes 1 and 2, from a GMM with k components, pretrained on phoneme 1
 # Get predictions on samples from both phonemes 1 and 2, from a GMM with k components, pretrained on phoneme 2
 # Compare these predictions for each sample of the dataset, and calculate the accuracy, and store it in a scalar
@@ -110,11 +101,9 @@ for j in range(length, len(X_phonemes_1_2)):
         true += 1
 
 accuracy = (true) / (len(X_phonemes_1_2))*100
-########################################/
 
 print('Accuracy using GMMs with {} components: {:.2f}%'.format(k, accuracy))
 
-################################################
 # enter non-interactive mode of matplotlib, to keep figures open
 plt.ioff()
 plt.show()

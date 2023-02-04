@@ -28,19 +28,16 @@ print('f2 statistics:')
 print_values(f2)
 # Initialize array containing f1 & f2, of all phonemes.
 X_full = np.zeros((len(f1), 2))
-#########################################
-# Write your code here
+
 # Store f1 in the first column of X_full, and f2 in the second column of X_full
 for i in range(X_full.shape[0]):
     X_full[i, 0] = f1[i]
     X_full[i, 1] = f2[i]
-########################################/
+
 X_full = X_full.astype(np.float32)
 # you can use the p_id variable, to store the ID of the chosen phoneme that will be used (e.g. phoneme 1, or phoneme 2)
 p_id = 1
 
-#########################################
-# Write your code here
 
 # Create an array named "X_phoneme_1", containing only samples that belong to the chosen phoneme.
 # The shape of X_phoneme_1 will be two-dimensional. Each row will represent a sample of the dataset, and each column
@@ -56,7 +53,6 @@ ids = m[0]
 for n in range(X_phoneme_1.shape[0]):
     X_phoneme_1[n] = X_full[ids[n]]
 
-########################################
 
 # Plot array containing all phonemes
 
@@ -68,7 +64,6 @@ plot_data_all_phonemes(X=X_full, phoneme_id=phoneme_id, ax=ax1)
 plot_filename = os.path.join(os.getcwd(), 'figures', 'dataset_full.png')
 plt.savefig(plot_filename)
 
-################################################
 # Plot array containing phoneme 1
 
 # Create a figure and a subplot

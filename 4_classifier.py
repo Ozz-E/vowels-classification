@@ -37,20 +37,16 @@ f2 = data['f2']
 
 # Initialize array containing f1 & f2, of all phonemes.
 X_full = np.zeros((len(f1), 2))
-#########################################
-# Write your code here
+
 # Store f1 in the first column of X_full, and f2 in the second column of X_full
 for i in range(X_full.shape[0]):
     X_full[i, 0] = f1[i]
     X_full[i, 1] = f2[i]
-########################################/
 X_full = X_full.astype(np.float32)
 
 # number of GMM components
 k = 6
 
-#########################################
-# Write your code here
 
 # Create an array named "X_phonemes_1_2", containing only samples that belong to phoneme 1 and samples that belong
 # to phoneme 2.
@@ -67,7 +63,7 @@ ids = np.append(m1[0], m2[0], axis=0)
 
 for n in range(X_phonemes_1_2.shape[0]):
     X_phonemes_1_2[n] = X_full[ids[n]]
-########################################/
+
 
 # as dataset X, we will use only the samples of phoneme 1 and 2
 X = X_phonemes_1_2.copy()
@@ -81,7 +77,6 @@ N_f2 = max_f2 - min_f2
 print('f1 range: {}-{} | {} points'.format(min_f1, max_f1, N_f1))
 print('f2 range: {}-{} | {} points'.format(min_f2, max_f2, N_f2))
 
-#########################################
 # Write your code here
 
 # Create a custom grid of shape N_f1 x N_f2
@@ -112,7 +107,6 @@ grid_i = np.arange(min_f1, max_f1)
 grid_j = np.arange(min_f2, max_f2)
 # separate i and j rows for prediction grid
 for i in range(N_f2):
-    print(i)
     for j in range(N_f1):
         grid = np.array([[grid_i[j], grid_j[i]]])
         prediction_1 = get_predictions(mu1, s1, p1, grid)
@@ -121,10 +115,7 @@ for i in range(N_f2):
             M[i, j] = 0.0
         else:
             M[i, j] = 1.0
-# as asked in the task_4.py, handout asked for 1.0 and 2.0 respectively, but it doesnt change the result
-########################################/
 
-################################################
 # Visualize predictions on custom grid
 
 # Create a figure
@@ -169,7 +160,6 @@ plt.legend()
 plot_filename = os.path.join(os.getcwd(), 'figures', 'GMM_predictions_on_grid.png')
 plt.savefig(plot_filename)
 
-################################################
 # enter non-interactive mode of matplotlib, to keep figures open
 plt.ioff()
 plt.show()

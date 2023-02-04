@@ -29,13 +29,12 @@ f2 = data['f2']
 
 # Initialize array containing f1 & f2, of all phonemes.
 X_full = np.zeros((len(f1), 2))
-#########################################
-# Write your code here
+
 # Store f1 in the first column of X_full, and f2 in the second column of X_full
 for i in range(X_full.shape[0]):
     X_full[i, 0] = f1[i]
     X_full[i, 1] = f2[i]
-########################################/
+
 X_full = X_full.astype(np.float32)
 
 # We will train a GMM with k components, on a selected phoneme id which is stored in variable "p_id" 
@@ -44,9 +43,6 @@ X_full = X_full.astype(np.float32)
 k = 3
 # you can use the p_id variable, to store the ID of the chosen phoneme that will be used (e.g. phoneme 1, or phoneme 2)
 p_id = 2
-
-#########################################
-# Write your code here
 
 # Create an array named "X_phoneme", containing only samples that belong to the chosen phoneme.
 # The shape of X_phoneme will be two-dimensional. Each row will represent a sample of the dataset, and each column
@@ -61,8 +57,6 @@ id_1 = m[0]
 for n in range(X_phoneme.shape[0]):
     X_phoneme[n] = X_full[id_1[n]]
 
-########################################/
-
 # Plot array containing the chosen phoneme
 
 # Create a figure and a subplot
@@ -75,7 +69,6 @@ plot_data(X=X_phoneme, title_string=title_string, ax=ax1)
 plot_filename = os.path.join(os.getcwd(), 'figures', 'dataset_phoneme_{}.png'.format(p_id))
 plt.savefig(plot_filename)
 
-################################################
 # Train a GMM with k components, on the chosen phoneme
 
 # as dataset X, we will use only the samples of the chosen phoneme
@@ -105,7 +98,7 @@ for i in range(k):
 # Initialize array Z that will get the predictions of each Gaussian on each sample
 Z = np.zeros((N,k)) # shape Nxk
 print(s)
-###############################
+
 # run Expectation Maximization algorithm for n_iter iterations
 for t in range(n_iter):
     print('Iteration {:03}/{:03}'.format(t+1, n_iter))
