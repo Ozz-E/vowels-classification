@@ -105,6 +105,7 @@ grid_i = np.arange(min_f1, max_f1)
 grid_j = np.arange(min_f2, max_f2)
 # separate i and j rows for prediction grid
 for i in range(N_f2):
+    print(i)
     for j in range(N_f1):
         grid = np.array([[grid_i[j], grid_j[i]]])
         prediction_1 = get_predictions(mu1, s1, p1, grid)
