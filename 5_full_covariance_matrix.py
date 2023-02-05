@@ -104,7 +104,6 @@ Z = np.zeros((N,k)) # shape Nxk
 
 # run Expectation Maximization algorithm for n_iter iterations
 for t in range(n_iter):
-    #print('****************************************')
     print('Iteration {:03}/{:03}'.format(t+1, n_iter))
 
     # Do the E-step
@@ -115,7 +114,6 @@ for t in range(n_iter):
     for i in range(k):
         mu[i,:] = np.matmul(X.transpose(), Z[:,i])/np.sum(Z[:,i])
         
-        ###################################################
         # We will fit Gaussians with full covariance matrices:
         mu_i = mu[i,:]
         mu_i = np.expand_dims(mu_i, axis=1)
@@ -124,11 +122,10 @@ for t in range(n_iter):
         term_1 = X.transpose() - mu_i_repeated
         term_2 = np.repeat(np.expand_dims(Z[:,i], axis=1), D, axis=1) * term_1.transpose()
         s[i,:,:] = np.matmul(term_1, term_2)/np.sum(Z[:,i])
-        #########################################
-        # Write your code here
+
         # Suggest ways of overcoming the singularity
         s[i, :, :] = s[i, :, :] * np.identity(D)
-        ########################################/
+
         p[i] = np.mean(Z[:,i])
     ax1.clear()
     # plot the samples of the dataset, belonging to the chosen phoneme (f1, f2, f1+f2 | phoneme 1 or 2)
