@@ -39,10 +39,7 @@ f2 = data['f2']
 X_full = np.zeros((len(f1), 2))
 
 # Store f1 in the first column of X_full, and f2 in the second column of X_full
-for i in range(X_full.shape[0]):
-    X_full[i, 0] = f1[i]
-    X_full[i, 1] = f2[i]
-X_full = X_full.astype(np.float32)
+X_full = np.array([[f1[i], f2[i]] for i in range(len(f1))], dtype=np.float32)
 
 # number of GMM components
 k = 6
@@ -60,10 +57,7 @@ X_phonemes_1_2 = np.zeros((np.sum(np.add(phoneme_id == 1, phoneme_id == 2)), 2))
 m1 = np.where(phoneme_id == 1)
 m2 = np.where(phoneme_id == 2)
 ids = np.append(m1[0], m2[0], axis=0)
-
-for n in range(X_phonemes_1_2.shape[0]):
-    X_phonemes_1_2[n] = X_full[ids[n]]
-
+X_phonemes_1_2 = X_full[ids]
 
 # as dataset X, we will use only the samples of phoneme 1 and 2
 X = X_phonemes_1_2.copy()
