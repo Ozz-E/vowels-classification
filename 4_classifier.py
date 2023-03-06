@@ -42,7 +42,7 @@ X_full = np.zeros((len(f1), 2))
 X_full = np.array([[f1[i], f2[i]] for i in range(len(f1))], dtype=np.float32)
 
 # number of GMM components
-k = 6
+k = 3
 
 
 # Create an array named "X_phonemes_1_2", containing only samples that belong to phoneme 1 and samples that belong
