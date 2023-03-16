@@ -1,62 +1,57 @@
 import numpy as np
 import os
-import matplotlib.pyplot as plt
-from print_values import *
-from plot_data_all_phonemes import *
-from plot_data import *
-import random
 from sklearn.preprocessing import normalize
 from get_predictions import *
 from plot_gaussians import *
 
 data_npy_file = 'data/PB_data.npy'
+
 trained_GMM_file_1 = 'data/GMM_params_phoneme_01_k_06.npy'
 trained_GMM_file_2 = 'data/GMM_params_phoneme_02_k_06.npy'
 
-# Loading data from .npy file
 data = np.load(data_npy_file, allow_pickle=True)
-# Array that contains the phoneme ID (1-10) of each sample
 phoneme_id = data['phoneme_id']
-# frequencies f1 and f2
 f1 = data['f1']
 f2 = data['f2']
 
-# Initialize array containing f1 & f2, of all phonemes.
 X_full = np.column_stack((f1, f2))
 
-# Create an array named "X_phonemes_1_2", containing only samples that belong to phoneme 1 and samples that belong
-# to phoneme 2.
-X_phonemes_1_2 = X_full[np.logical_or(phoneme_id==1, phoneme_id==2)]
+k = 6
 
-# as dataset X, we will use only the samples of phoneme 1 and 2
+m1 = np.where(phoneme_id == 1)[0]
+m2 = np.where(phoneme_id == 2)[0]
+ids = np.concatenate((m1, m2))
+X_phonemes_1_2 = X_full[ids]
+
 X = X_phonemes_1_2.copy()
 
-min_f1, max_f1 = X[:,0].min().astype(int), X[:,0].max().astype(int)
-min_f2, max_f2 = X[:,1].min().astype(int), X[:,1].max().astype(int)
-N_f1 = max_f1 - min_f1 + 1
-N_f2 = max_f2 - min_f2 + 1
-
+min_f1, max_f1 = int(np.min(X[:,0])), int(np.max(X[:,0]))
+min_f2, max_f2 = int(np.min(X[:,1])), int(np.max(X[:,1]))
+N_f1, N_f2 = max_f1 - min_f1, max_f2 - min_f2
 print(f'f1 range: {min_f1}-{max_f1} | {N_f1} points')
 print(f'f2 range: {min_f2}-{max_f2} | {N_f2} points')
 
-# Create a custom grid of shape N_f1 x N_f2
-# The grid will span all the values of (f1, f2) pairs, between [min_f1, max_f1] on f1 axis, and between [min_f2, max_f2]
-# on f2 axis
-custom_grid = np.transpose([np.tile(np.arange(min_f1, max_f1+1), len(np.arange(min_f2, max_f2+1))),
-                              np.repeat(np.arange(min_f2, max_f2+1), len(np.arange(min_f1, max_f1+1)))])
+grid = np.zeros((N_f2, N_f1))
+M = np.zeros((N_f2, N_f1))
 
-# load GMM params
-trainedGMM1 = np.load(trained_GMM_file_1, allow_pickle=True)
-trainedGMM2 = np.load(trained_GMM_file_2, allow_pickle=True)
+mu1, mu2 = np.load(trained_GMM_file_1, allow_pickle=True)['mu'], np.load(trained_GMM_file_2, allow_pickle=True)['mu']
+s1, s2 = np.load(trained_GMM_file_1, allow_pickle=True)['s'], np.load(trained_GMM_file_2, allow_pickle=True)['s']
+p1, p2 = np.load(trained_GMM_file_1, allow_pickle=True)['p'], np.load(trained_GMM_file_2, allow_pickle=True)['p']
 
-# classify each point [i.e., each (f1, f2) pair] of the custom grid, to either phoneme 1, or phoneme 2,
-# using the two trained GMMs
-# Do predictions, using GMM trained on phoneme 1, on custom grid
-gmm1 = trainedGMM1[0]
-pi1 = trainedGMM1[1]
-mu1 = trainedGMM1[2]
-sigma1 = trainedGMM1[3]
-likelihood1 = np.zeros((custom_grid.shape[0], k))
+grid_i, grid_j = np.arange(min_f1, max_f1), np.arange(min_f2, max_f2)
 
-for i in range(k):
-    likelihood1[:, i] = pi1[i] * multivariate_normal.pdf(custom_grid, mean=mu
+for i in range(N_f1):
+    for j in range(N_f2):
+        point = np.array([grid_i[i], grid_j[j]]).reshape(1, -1)
+        p1x = get_predictions(point, k, mu1, s1, p1)
+        p2x = get_predictions(point, k, mu2, s2, p2)
+        M[j, i] = 1.0 if p2x > p1x else 0.0
+
+plot_gaussians(X, mu1, s1, p1, mu2, s2, p2)
+plt.imshow(M, origin='lower', extent=[min_f1, max_f1, min_f2, max_f2], cmap='jet', alpha=0.5)
+plt.xlabel('f1')
+plt.ylabel('f2')
+plt.title('Decision boundary for phoneme classification')
+plt.colorbar()
+plt.savefig(os.path.join('figures', 'phoneme_classification.png'))
+plt.show()
